@@ -17,15 +17,15 @@ To run this script, use terminal:
 $ python3 image_resize.py [arguments]
 ```
 
-####Available arguments:
+**Available arguments:**
 
 -h --help: get help
 
-#####Required arguments:
+**Required arguments:**
 
 [path] - full path or filename of image you want to resize
 
-#####Optional arguments:
+**Optional arguments:**
 
 -s --scale: scale ratio. Can not be used with -x or -y arguments
 
