@@ -1,16 +1,10 @@
 from PIL import Image
 import argparse
 import os
-
+import math
 
 def check_if_aspect_changed(x1, y1, x2, y2):
-    # in some cases very small difference is aspect ratio is inevitable
-    # so it is a good idea to leave some gap allowed (50:60 vs 5005:6009)
-    aspect_difference = abs((x1 / y1) - (x2 / y2))
-    if aspect_difference > 0.0015:
-        return True
-    else:
-        return False
+    return not math.isclose((x1 / y1), (x2 / y2), rel_tol=0.002)
 
 
 def get_new_size(original_size, width=None, height=None, scale=None):
@@ -41,7 +35,7 @@ def resize_image(input_path, output_path, width, heigh, scale):
     try:
         image = Image.open(input_path, 'r')
     except IOError as error:
-        print("{}: {}".format(error.strerror, input_path))
+        print(error)
     else:
         new_size = get_new_size(image.size, width, heigh, scale)
         resized_image = image.resize(new_size)
@@ -57,7 +51,7 @@ def resize_image(input_path, output_path, width, heigh, scale):
             print("File succesfully resized: {}".format(new_path))
 
 
-def main():
+def arguments_parser():
     parser = argparse.ArgumentParser(description='This is a simple utility to scale images.',
                                      epilog='Scale cannot be used with width or height.')
     
@@ -72,7 +66,11 @@ def main():
     group1.add_argument('-y', '--y_size', metavar='480', help='determines width of new image', type=int)
     group2.add_argument('-s', '--scale', metavar='1.6', help='determines a new image scale', type=float)
     
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main():
+    args = arguments_parser()
     
     if args.scale is not None and (args.x_size or args.y_size) is not None:
         print('Scale cannot be used with width or height arguments.\nUse only [-s] or [-x, -y]')
