@@ -28,7 +28,7 @@ def get_new_size(original_size, width=None, height=None, scale=None):
     else:
         new_x, new_y = (original_size)
     
-    return (int(new_x), int(new_y))
+    return int(new_x), int(new_y)
 
 
 def resize_image(input_path, output_path, width, heigh, scale):
@@ -51,7 +51,7 @@ def resize_image(input_path, output_path, width, heigh, scale):
             print("File succesfully resized: {}".format(new_path))
 
 
-def arguments_parser():
+def get_arguments_from_parser():
     parser = argparse.ArgumentParser(description='This is a simple utility to scale images.',
                                      epilog='Scale cannot be used with width or height.')
     
@@ -70,7 +70,7 @@ def arguments_parser():
 
 
 def main():
-    args = arguments_parser()
+    args = get_arguments_from_parser()
     
     if args.scale is not None and (args.x_size or args.y_size) is not None:
         print('Scale cannot be used with width or height arguments.\nUse only [-s] or [-x, -y]')
